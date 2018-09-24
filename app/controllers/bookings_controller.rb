@@ -2,7 +2,6 @@ class BookingsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :update, :destroy, :index, :show]
   before_action :set_booking, only: [:show, :edit, :update, :destroy]
   # GET /bookings
-  # GET /bookings.json
   def index
     @bookings = current_user.bookings.includes(:room).paginate(page: params[:page], per_page: 10)
   end
@@ -12,7 +11,6 @@ class BookingsController < ApplicationController
     @bookings = Booking.all
   end
 
-  # GET /bookings/1
   def show
     if @booking
       @room = @booking.room

@@ -25,7 +25,11 @@
                 <td><%= @booking.room.room_type%></td>
               </tr>
               <tr>
-                <td>Cost </td>
+                <td>Cost per room </td>
+                <td><%= @booking.room.price%></td>
+              </tr>
+              <tr>
+                <td>Total Cost </td>
                 <td><%= @booking.cost%></td>
               </tr>
             </tbody>

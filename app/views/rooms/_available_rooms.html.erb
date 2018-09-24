@@ -1,0 +1,58 @@
+<% if @errors.any? %>
+  <div id="error_explanation">
+    <ul>
+      <%# @errors.each do | message| %>
+        <li><%= @errors.last %></li>
+      <%# end %>
+    </ul>
+  </div>
+<% elsif params[:room_type].empty? %>
+  <table class="col-sm-12 ">
+    <thead>
+      <tr>
+        <th>Room Type</th>
+        <th>Available Rooms</th>
+        <th>Book now</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Deluxe Rooms</td>
+        <td><%=@deluxe%></td>
+        <td><%= link_to 'Book Now', new_booking_path(room_type:0, start_date: params[:arrival], last_date: params[:departure]), class: 'btn btn-primary btn-sm mb-10'%></td>
+      </tr>
+      <tr>
+        <td>Luxury Rooms</td>
+        <td><%=@lux_room%></td>
+        <td><%= link_to 'Book Now', new_booking_path(room_type:1, start_date: params[:arrival], last_date: params[:departure]), class: 'btn btn-primary btn-sm mb-10'%></td>
+      </tr>
+      <tr>
+        <td>Luxury suites</td>
+        <td><%=@lux_suite%></td>
+        <td><%= link_to 'Book Now', new_booking_path(room_type:2, start_date: params[:arrival], last_date: params[:departure]), class: 'btn btn-primary btn-sm mb-10'%></td>
+      </tr>
+      <tr>
+        <td>Presidential Suites</td>
+        <td><%=@pres_suite%></td>
+        <td><%= link_to 'Book Now', new_booking_path(room_type:3, start_date: params[:arrival], last_date: params[:departure]), class: 'btn btn-primary btn-sm mb-10'%></td>
+      </tr>
+    </tbody>
+  </table>
+<% else %>
+<table class="col-sm-12 ">
+    <thead>
+      <tr>
+        <th>Room Type</th>
+        <th>Available Rooms</th>
+        <th>Book now</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= params[:room_type]%></td>
+        <td><%=@rooms%></td>
+        <td><%= link_to 'Book Now', new_booking_path(room_type:0), class: 'btn btn-primary btn-sm'%></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

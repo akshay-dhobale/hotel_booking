@@ -1,60 +1,59 @@
-  <section class="site-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <h2 class="mb-5">Reservation Form</h2>
-                <%= form_for(@booking) do |f| %>
+<section class="site-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-5">
+        <h2 class="mb-5">Reservation Form</h2>
+          <%= form_for(@booking) do |f| %>
 
-                <% if @booking.errors.any? %>
-                  <div id="error_explanation">
-                    <h2><%= pluralize(@booking.errors.count, "error") %> prohibited this booking from being saved:</h2>
+          <% if @booking.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@booking.errors.count, "error") %> prohibited this booking from being saved:</h2>
 
-                    <ul>
-                      <% @booking.errors.messages.each do |attribute, message| %>
-                        <li><%= message.first %></li>
-                      <% end %>
-                    </ul>
-                  </div>
+              <ul>
+                <% @booking.errors.messages.each do |attribute, message| %>
+                  <li><%= message.first %></li>
                 <% end %>
+              </ul>
+            </div>
+          <% end %>
 
-                  <div class="form-group">
-                    <label for="">Room Type</label>
-                    <div style="position: relative;">
-                      <%= f.select :room_type, Booking.room_types, {}, {class: 'form-control'}%>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6 form-group">
-                      <label for="">Arrival Date</label>
-                      <div style="position: relative;">
-                        <%= f.date_field :start_date, class: "form-control"%>
-                        <span class="fa fa-calendar icon" style="position: absolute; right: 10px; top: 10px;"></span>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6 form-group">
-                      <label for="">Departure Date</label>
-                      <div style="position: relative;">
-                        <%= f.date_field :last_date, class: "form-control"%>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-
-
-                    <div class="col-md-6 form-group">
-                      <label for="room">Guests</label>
-                      <%= f.select :num_of_user, {1 => 1, 2 => 2, 3 => 3, 4 => 4}, {class: "form-control"} %>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 form-group">
-                      <%= f.submit %>
-                    </div>
-                  </div>
-                <% end %>
+          <div class="form-group">
+            <label for="">Room Type</label>
+            <div style="position: relative;">
+              <%= f.select :room_type, options_for_select(Booking.room_types, selected: params[:room_type]), {}, {class: 'form-control'}%>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 form-group">
+              <label for="">Check In Date</label>
+              <div style="position: relative;">
+                <%= f.date_field :start_date, class: "form-control", value: params[:start_date]%>
               </div>
-        </div>
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="">Check Out Date</label>
+              <div style="position: relative;">
+                <%= f.date_field :last_date, class: "form-control", value: params[:last_date]%>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+
+
+            <div class="col-md-6 form-group">
+              <label for="room">Guests</label>
+              <%= f.select :num_of_user, {1 => 1, 2 => 2, 3 => 3, 4 => 4}, {class: "form-control"} %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <%= f.submit %>
+            </div>
+          </div>
+        <% end %>
       </div>
-    </section>
+    </div>
+  </div>
+</section>

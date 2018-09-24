@@ -1,0 +1,27 @@
+<%= form_tag("/rooms/check_availability", method: "get", remote: true) do %>
+
+  <div class="row">
+    <div class="col-sm-3 form-group">
+      <label>Check in</label>
+      <input type="date" name="arrival" class="form-control">
+    </div>
+    <div class="col-sm-3 form-group">
+      <label>Check out</label>
+      <input type="date" name="departure" class="form-control"  min = today>
+    </div>
+    <div class="col-sm-3 form-group">
+      <label>Room Type</label>
+      <select name="room_type" id="room" class="form-control">
+        <option value="">Select Room Type</option>
+        <option value="Deluxe Rooms">Deluxe Rooms</option>
+        <option value="Luxury Rooms">Luxury Rooms </option>
+        <option value="Luxury suites">Luxury suites</option>
+        <option value="Presidential Suites">Presidential Suites</option>
+      </select>
+    </div>
+    <div class="col-sm-3 form-group">
+      <br>
+      <button type="submit" class="btn btn-default">check</button>
+    </div>
+  </div>
+<%end %>

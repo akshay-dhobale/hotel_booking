@@ -1,66 +1,52 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action  :authorize, except: [:index, :show] 
+  before_action :authenticate_user!, except: [:index, :show, :check_availability]
+  before_action  :authorize, except: [:index, :show, :check_availability]
   include ApplicationHelper
-  # GET /rooms
-  # GET /rooms.json
   def index
     @rooms = Room.all
+    @room = Booking.new
   end
 
-  # GET /rooms/1
-  # GET /rooms/1.json
   def show
     @booking = Booking.new(room_type:@room.room_type)
   end
 
-  # GET /rooms/new
   def new
     @room = Room.new
   end
 
-  # GET /rooms/1/edit
   def edit
   end
 
-  # POST /rooms
-  # POST /rooms.json
   def create
     @room = Room.new(room_params)
 
     respond_to do |format|
       if @room.save
         format.html { redirect_to @room, notice: 'Room was successfully created.' }
-        format.json { render :show, status: :created, location: @room }
       else
         format.html { render :new }
-        format.json { render json: @room.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /rooms/1
-  # PATCH/PUT /rooms/1.json
-  def update
-    respond_to do |format|
-      if @room.update(room_params)
-        format.html { redirect_to @room, notice: 'Room was successfully updated.' }
-        format.json { render :show, status: :ok, location: @room }
-      else
-        format.html { render :edit }
-        format.json { render json: @room.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
-  # DELETE /rooms/1
-  # DELETE /rooms/1.json
-  def destroy
-    @room.destroy
+  def check_availability
+    @errors = []
+    if last_date_greater_than_start_date_and_smaller_six_month(params[:arrival], params[:departure])
+      return false
+    # last_date should be smaller than 6 months
+    elsif params[:room_type].empty?
+      @deluxe = Room.avail_rooms(params[:arrival], params[:departure], 'Deluxe Rooms').count
+      @lux_room = Room.avail_rooms(params[:arrival], params[:departure], 'Luxury Rooms').count
+      @lux_suite = Room.avail_rooms(params[:arrival], params[:departure], 'Luxury suites').count
+      @pres_suite = Room.avail_rooms(params[:arrival], params[:departure], 'Presidential Suites').count
+    else
+      @rooms = Room.avail_rooms(params[:arrival], params[:departure], params[:room_type]).count
+    end
     respond_to do |format|
-      format.html { redirect_to rooms_url, notice: 'Room was successfully destroyed.' }
-      format.json { head :no_content }
+      format.js
     end
   end
 
@@ -73,5 +59,20 @@ class RoomsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def room_params
       params.require(:room).permit(:price, :rno, :room_type)
+    end
+
+    def last_date_greater_than_start_date_and_smaller_six_month(start_date, last_date)
+      if Date.today > start_date.to_date
+        @errors.push(:start_date, "check in date should be greater or equal to today's date")
+      # last_date should be smaller than 6 months
+      elsif Date.today + 6.months < last_date.to_date
+        @errors.push(:last_date, "Check out date should be smaller than 6 months")
+      # last_date should be greater than start_date
+      elsif last_date.to_date == start_date.to_date
+        @errors.push(:last_date, "check out date should be greater than Check in Date")
+      # last_date should be greater than start_date
+      elsif last_date.to_date < start_date.to_date
+        @errors.push(:last_date, "check out date should be greater than Check in Date")
+      end
     end
 end
