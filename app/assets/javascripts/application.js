@@ -22,26 +22,14 @@
 
 $(document).ready(function($) {
 	$( "#datepicker,#datepicker1" ).datepicker({ dateFormat: 'yy-mm-dd' });
-	var loc = window.location.href.split('/');
-	var page = loc[loc.length - 1];
-	if (page == 'rooms'){
-		$('#navigation_bar li a:first').removeClass("active");
-		$('#navigation_bar li a:eq(1)').addClass("active");
-	}
-	else
-	{
-		$('#navigation_bar li a:first').addClass("active");
-	}
-
-
-    $(window).load(function(){
-      $('.flexslider').flexslider({
-        animation: "slide",
-        directionNav : false,
-        slideshowSpeed:3000,
-        start: function(slider){
-          $('body').removeClass('loading');
-        }
-      });
+  $(window).load(function(){
+    $('.flexslider').flexslider({
+      animation: "slide",
+      directionNav : false,
+      slideshowSpeed:3000,
+      start: function(slider){
+        $('body').removeClass('loading');
+      }
     });
+  });
 });
