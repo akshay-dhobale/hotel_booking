@@ -32,10 +32,8 @@ $(document).ready(function($) {
 	{
 		$('#navigation_bar li a:first').addClass("active");
 	}
-	
-    $(function(){
-      SyntaxHighlighter.all();
-    });
+
+
     $(window).load(function(){
       $('.flexslider').flexslider({
         animation: "slide",
